@@ -1,12 +1,16 @@
-import { StudentLayout } from "../layouts";
-import { Home, Login, NotFoundPage } from "../pages";
+import { AdminLayout, StudentLayout } from "../layouts";
+import {
+  AcadamicYearPage,
+  Admin,
+  ArticlePage,
+  DeadlinePage,
+  FacultyPage,
+  Login,
+  NotFoundPage,
+  UserPage,
+} from "../pages";
 
 export const routes = [
-  {
-    path: "/student",
-    page: Home,
-    layout: StudentLayout,
-  },
   {
     path: "/login",
     page: Login,
@@ -16,5 +20,46 @@ export const routes = [
     path: "*",
     page: NotFoundPage,
     layout: null,
+  },
+];
+
+export const studentRoutes = [
+  {
+    path: "/student",
+    page: ArticlePage,
+    layout: StudentLayout,
+  },
+];
+
+export const adminRoutes = [
+  {
+    path: "/admin",
+    page: Admin,
+    layout: AdminLayout,
+  },
+  {
+    path: "/admin/article",
+    page: ArticlePage,
+    layout: AdminLayout,
+  },
+  {
+    path: "/admin/deadline",
+    page: DeadlinePage,
+    layout: AdminLayout,
+  },
+  {
+    path: "/admin/faculty",
+    page: FacultyPage,
+    layout: AdminLayout,
+  },
+  {
+    path: "/admin/user",
+    page: UserPage,
+    layout: AdminLayout,
+  },
+  {
+    path: "/admin/year",
+    page: AcadamicYearPage,
+    layout: AdminLayout,
   },
 ];

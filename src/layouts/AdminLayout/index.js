@@ -1,13 +1,13 @@
 import React from "react";
-import Header from "../../component/Header";
+import AdminHeader from "../../component/AdminHeader";
 
-function StudentLayout({ children }) {
+function AdminLayout({ children }) {
   return (
     <div>
-      <Header />
+      <AdminHeader />
       <div className="flex items-center justify-between">{children}</div>
     </div>
   );
 }
 
-export default StudentLayout;
+export default AdminLayout;

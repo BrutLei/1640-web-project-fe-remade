@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import images from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as UserServices from "../../services/UserServices";
 import { resetUser } from "../../redux/slices/userSlice";
 
-function Header() {
+function AdminHeader() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  let pathname = location.pathname.split("/")[2];
+  console.log(pathname);
   const user = useSelector((state) => state.user);
 
   const handleShowMenu = (state) => {
@@ -33,6 +37,45 @@ function Header() {
               {user?.faculty ? user.faculty : ""}
             </span>
           </a>
+          <div>
+            <ul className="flex items-center justify-between font-medium gap-3 w-full text-xl capitalize font-mono">
+              <li
+                className={`w-fit ${
+                  pathname === "article" ? "text-blue-700" : ""
+                }`}
+              >
+                <NavLink to="/admin/article">Article</NavLink>
+              </li>
+              <li
+                className={`w-fit ${
+                  pathname === "year" ? "text-blue-700" : ""
+                }`}
+              >
+                <NavLink to="/admin/year">Academic year</NavLink>
+              </li>
+              <li
+                className={`w-fit ${
+                  pathname === "deadline" ? "text-blue-700" : ""
+                }`}
+              >
+                <NavLink to="/admin/deadline">Deadline</NavLink>
+              </li>
+              <li
+                className={`w-fit ${
+                  pathname === "faculty" ? "text-blue-700" : ""
+                }`}
+              >
+                <NavLink to="/admin/faculty">faculty</NavLink>
+              </li>
+              <li
+                className={`w-fit ${
+                  pathname === "user" ? "text-blue-700" : ""
+                }`}
+              >
+                <NavLink to="/admin/user">user</NavLink>
+              </li>
+            </ul>
+          </div>
           <div style={{ position: "relative" }} className="flex">
             <button
               type="button"
@@ -130,4 +173,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default AdminHeader;
