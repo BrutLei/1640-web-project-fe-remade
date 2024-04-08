@@ -6,3 +6,5 @@ export { default as AcadamicYearPage } from "./AcadamicYearPage";
 export { default as DeadlinePage } from "./DeadlinePage";
 export { default as FacultyPage } from "./FacultyPage";
 export { default as UserPage } from "./UserPage";
+export { default as MarketingManagerPage } from "./MarketingManagerPage";
+export { default as HomePage } from "./HomePage";
