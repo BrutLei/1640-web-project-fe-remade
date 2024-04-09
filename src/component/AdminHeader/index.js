@@ -69,6 +69,13 @@ function AdminHeader() {
               </li>
               <li
                 className={`w-fit ${
+                  pathname === "maketingmanager" ? "text-blue-700" : ""
+                }`}
+              >
+                <NavLink to="/admin/marketing-manager">MarketingManagerPage</NavLink>
+              </li>
+              <li
+                className={`w-fit ${
                   pathname === "user" ? "text-blue-700" : ""
                 }`}
               >

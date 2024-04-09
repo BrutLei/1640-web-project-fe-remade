@@ -6,6 +6,8 @@ import {
   DeadlinePage,
   FacultyPage,
   Login,
+  HomePage,
+  MarketingManagerPage,
   NotFoundPage,
   UserPage,
 } from "../pages";
@@ -14,11 +16,6 @@ export const routes = [
   {
     path: "/login",
     page: Login,
-    layout: null,
-  },
-  {
-    path: "/helloWorld",
-    page: ArticlePage,
     layout: null,
   },
   {
