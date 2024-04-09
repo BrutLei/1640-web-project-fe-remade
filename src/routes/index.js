@@ -17,6 +17,11 @@ export const routes = [
     layout: null,
   },
   {
+    path: "/helloWorld",
+    page: ArticlePage,
+    layout: null,
+  },
+  {
     path: "*",
     page: NotFoundPage,
     layout: null,

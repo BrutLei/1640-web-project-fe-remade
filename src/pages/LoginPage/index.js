@@ -36,7 +36,11 @@ const Login = () => {
           handleGetDetailsUser(decoded.id, data.DT.accessToken);
         }
       }
-      navigate("/admin");
+      if (data.EC === "0-1") {
+        navigate("/student");
+      } else {
+        navigate("/admin");
+      }
     } else if (isError) {
       toast.error("Login falied");
     }
