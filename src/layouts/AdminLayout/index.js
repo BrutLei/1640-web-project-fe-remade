@@ -5,7 +5,7 @@ function AdminLayout({ children }) {
   return (
     <div>
       <AdminHeader />
-      <div className="flex items-center justify-between">{children}</div>
+      <div className="px-10">{children}</div>
     </div>
   );
 }

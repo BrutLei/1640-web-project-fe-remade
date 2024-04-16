@@ -5,7 +5,7 @@ function StudentLayout({ children }) {
   return (
     <div>
       <Header />
-      <div className="flex items-center justify-between">{children}</div>
+      <div className="p-10">{children}</div>
     </div>
   );
 }

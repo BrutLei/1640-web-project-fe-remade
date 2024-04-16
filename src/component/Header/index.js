@@ -30,7 +30,7 @@ function Header() {
           <a className="flex flex-row">
             <img src={images.commonLogo} className="h-10 mr-2" />
             <span className="self-center text-xl font-semibold whitespace-nowrap capitalize">
-              {user?.faculty ? user.faculty : ""}
+              {user?.faculty ? user.faculty.name : ""}
             </span>
           </a>
           <div style={{ position: "relative" }} className="flex">

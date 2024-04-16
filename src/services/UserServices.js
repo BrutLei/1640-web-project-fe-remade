@@ -40,4 +40,36 @@ const logout = async () => {
   }
 };
 
-export { login, getDetailsUSer, logout };
+const fetchingStudentArticle = async (id, access_token) => {
+  try {
+    const res = await axios.get(`/articles/user/${id}`, {
+      headers: {
+        token: `Beare ${access_token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const fetchingArticle = async (access_token) => {
+  try {
+    const res = await axios.get(`/articles`, {
+      headers: {
+        token: `Beare ${access_token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  login,
+  getDetailsUSer,
+  logout,
+  fetchingStudentArticle,
+  fetchingArticle,
+};

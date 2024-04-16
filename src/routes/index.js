@@ -10,6 +10,7 @@ import {
   MarketingManagerPage,
   NotFoundPage,
   UserPage,
+  ArticleTable,
 } from "../pages";
 
 export const routes = [
@@ -19,9 +20,22 @@ export const routes = [
     layout: null,
   },
   {
+    path: "/",
+    page: HomePage,
+    layout: null,
+  },
+  {
     path: "*",
     page: NotFoundPage,
     layout: null,
+  },
+];
+
+export const marketerRoute = [
+  {
+    path: "/marketingmanager",
+    page: MarketingManagerPage,
+    layout: StudentLayout,
   },
 ];
 
@@ -41,7 +55,7 @@ export const adminRoutes = [
   },
   {
     path: "/admin/article",
-    page: ArticlePage,
+    page: ArticleTable,
     layout: AdminLayout,
   },
   {

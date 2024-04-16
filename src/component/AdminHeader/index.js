@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import images from "../../assets";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as UserServices from "../../services/UserServices";
 import { resetUser } from "../../redux/slices/userSlice";
 
 function AdminHeader() {
+  // const [logged, setLogged] = useState(false);
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
   const location = useLocation();
   let pathname = location.pathname.split("/")[2];
-  console.log(pathname);
+
   const user = useSelector((state) => state.user);
 
   const handleShowMenu = (state) => {
@@ -21,6 +21,17 @@ function AdminHeader() {
       setShowMenu(!state);
     }
   };
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("access_token");
+  //   if (token) {
+  //     setLogged(true);
+  //   }
+  //   if (!logged) {
+  //     navigate("/login");
+  //   }
+  // }, []);
+
   const handleLogout = async () => {
     localStorage.removeItem("access_token");
     dispatch(resetUser());
@@ -33,9 +44,7 @@ function AdminHeader() {
         <div className="justify-between max-w-screen flex flex-wrap items-center mx-auto p-4">
           <a className="flex flex-row">
             <img src={images.commonLogo} className="h-10 mr-2" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap capitalize">
-              {user?.faculty ? user.faculty : ""}
-            </span>
+            <span className="self-center text-xl font-semibold whitespace-nowrap capitalize"></span>
           </a>
           <div>
             <ul className="flex items-center justify-between font-medium gap-3 w-full text-xl capitalize font-mono">
@@ -67,13 +76,7 @@ function AdminHeader() {
               >
                 <NavLink to="/admin/faculty">faculty</NavLink>
               </li>
-              <li
-                className={`w-fit ${
-                  pathname === "maketingmanager" ? "text-blue-700" : ""
-                }`}
-              >
-                <NavLink to="/admin/marketing-manager">MarketingManagerPage</NavLink>
-              </li>
+
               <li
                 className={`w-fit ${
                   pathname === "user" ? "text-blue-700" : ""

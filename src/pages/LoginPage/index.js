@@ -9,6 +9,7 @@ import { updateUser } from "../../redux/slices/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [logged, setLogged] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector((state) => state.user);
@@ -23,6 +24,20 @@ const Login = () => {
   } else if (user.group === "admin") {
     navigate("/admin");
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      setLogged(!logged);
+      if (user) {
+        if (user.group === "student") {
+          navigate("/student");
+        } else if (user.group === "admin") {
+          navigate("/admin");
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {

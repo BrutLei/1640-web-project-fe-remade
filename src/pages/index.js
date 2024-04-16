@@ -8,3 +8,4 @@ export { default as FacultyPage } from "./FacultyPage";
 export { default as UserPage } from "./UserPage";
 export { default as MarketingManagerPage } from "./MarketingManagerPage";
 export { default as HomePage } from "./HomePage";
+export { default as ArticleTable } from "./ArticleTable";

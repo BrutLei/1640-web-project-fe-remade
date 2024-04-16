@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import { adminRoutes, privateRoutes, routes, studentRoutes } from "./routes";
+import { adminRoutes, marketerRoute, routes, studentRoutes } from "./routes";
 import * as UserServices from "./services/UserServices";
 import { updateUser } from "./redux/slices/userSlice";
 
@@ -79,6 +79,22 @@ function App() {
           })}
         {user.group == "admin" &&
           adminRoutes.map((e, index) => {
+            const Page = e.page;
+            const Layout = e.layout ? e.layout : Fragment;
+            return (
+              <Route
+                key={index}
+                path={e.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        {user.group == "admin" &&
+          marketerRoute.map((e, index) => {
             const Page = e.page;
             const Layout = e.layout ? e.layout : Fragment;
             return (
