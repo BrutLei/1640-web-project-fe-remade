@@ -30,6 +30,7 @@ function App() {
     if (token) {
       decode = jwtDecode(token);
       if (decode && decode.id) {
+        // console.log(decode);
         return { decode, token };
       }
     }
@@ -93,7 +94,7 @@ function App() {
               />
             );
           })}
-        {user.group == "admin" &&
+        {user.group == "Marketing Coordinator" &&
           marketerRoute.map((e, index) => {
             const Page = e.page;
             const Layout = e.layout ? e.layout : Fragment;

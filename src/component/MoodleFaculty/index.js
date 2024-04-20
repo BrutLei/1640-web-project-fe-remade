@@ -1,58 +1,37 @@
-import { useEffect, useState } from "react";
-// import { postCreateUser } from "~/service/UserService";
-import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import * as ArticleServices from "../../services/ArticleServices";
-import { useSelector } from "react-redux";
-import axios from "../../services/CustomAxios";
+import * as FacultyService from "../../services/FacultyService";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
-  const [desc, setDesc] = useState("");
-  const [file, setFile] = useState([]);
-  const [image, setImage] = useState([]);
+const MoodleFaculty = ({ show, handleToggle, change, setChange, id, type }) => {
+  const [name, setName] = useState("");
 
-  const [deadline, setDeadline] = useState();
-  const [displayDeadline, setDisplayDeadline] = useState();
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-
-  const user = useSelector((state) => state.user);
-
-  const handleSave = async () => {
-    if (Date.parse(deadline) - Date.now() >= 0) {
-      let res = null;
-      res = await ArticleServices.uploadArticle(user, desc, file, image);
-      setDesc("");
-      setFile([]);
-      setImage([]);
-      if (res) {
-        // window.location.reload(true);
-        setChange(!currentStage);
-        handleToggle();
-      }
-    } else {
-      toast.error(
-        "The deadline for the article submission has passed. You can submit it in the next term"
-      );
+  const fetchArticle = async (id) => {
+    const res = await FacultyService.fetchingSingleFaculty(id);
+    if (res) {
+      setName(res?.name);
     }
   };
 
   useEffect(() => {
-    fetchDeadlineData();
-  }, [currentStage]);
+    if (type === "update") {
+      if (id) {
+        fetchArticle(id);
+      }
+    } else {
+      setName("");
+    }
+  }, [show]);
 
-  const fetchDeadlineData = async () => {
-    const res = await axios.get(`/closedates/faculty/${user.faculty.id}`);
-    setDeadline(res.closingDate);
-    const beutyDate = new Date(res.closingDate).toLocaleDateString(
-      undefined,
-      options
-    );
-    setDisplayDeadline(beutyDate);
+  const handleSave = async () => {
+    if (type === "update") {
+      const res = await FacultyService.updateFacultyName(id, name);
+    } else {
+      const res = await FacultyService.addNewFaculty(name);
+      toast.success(`Create faculty ${res} successfully`);
+    }
+    handleToggle(false);
+    setChange(!change);
   };
 
   return (
@@ -67,10 +46,10 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
         <div className="relative bg-white rounded-lg shadow border border-black">
           <div className="flex items-center justify-between p-4 md:p-5 border-black shadow-sm rounded-t">
             <h3 className="text-xl font-semibold text-gray-900 ">
-              Upload Article
+              {type === "update" ? `Edit Faculty Name` : "Create new faculty"}
             </h3>
             <button
-              onClick={handleToggle}
+              onClick={() => handleToggle(false)}
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
               data-modal-hide={show ? "default-modal" : ""}
@@ -91,67 +70,29 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
           <div className="p-4 md:p-5 space-y-4">
             <form encType="multipart/form-data">
               <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                Deadline
-                <p>{displayDeadline}</p>
-              </label>
-
-              <label className="block mb-2 font-medium text-lg uppercase text-gray-900 ">
-                Short Description
+                Name
               </label>
               <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none "
                 type="text"
-                value={desc}
+                value={name}
                 onChange={(e) => {
-                  setDesc(e.currentTarget.value);
+                  setName(e.target.value);
                 }}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               ></input>
-              <p className="mt-1 text-sm text-gray-500 " id="file_input_help">
-                Name of Paper.
-              </p>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                File
-              </label>
-              <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
-                aria-describedby="file_input_help"
-                type="file"
-                accept=".docx"
-                name="file"
-                value={file.originalname}
-                onChange={(e) => setFile(e.target.files[0])}
-              ></input>
-              <p className="mt-1 text-sm text-gray-500 " id="file_input_help">
-                DOCX (MAX &lt; 5MB).
-              </p>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                Image
-              </label>
-              <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
-                aria-describedby="file_input_help"
-                type="file"
-                // accept=".jpeg .jpg .png"
-                name="file"
-                value={image.originalname}
-                onChange={(e) => setImage(e.target.files[0])}
-              ></input>
-              <p className="mt-1 text-sm text-gray-500 " id="file_input_help">
-                Img(MAX &lt; 5MB).
-              </p>
             </form>
           </div>
           <div className="flex justify-center items-center p-4 md:p-5 border-t border-gray-200 rounded-b ">
             <button
-              onClick={handleSave}
               data-modal-hide="default-modal"
+              onClick={handleSave}
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
             >
-              Upload
+              {type === "update" ? "Update" : "Add"}
             </button>
             <button
-              onClick={handleToggle}
+              onClick={() => handleToggle(false)}
               data-modal-hide="default-modal"
               type="button"
               className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 "
@@ -165,4 +106,4 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
   );
 };
 
-export default MoodleAdd;
+export default MoodleFaculty;

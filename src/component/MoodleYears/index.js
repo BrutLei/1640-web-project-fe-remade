@@ -1,59 +1,34 @@
 import { useEffect, useState } from "react";
-// import { postCreateUser } from "~/service/UserService";
 import { toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import * as ArticleServices from "../../services/ArticleServices";
 import { useSelector } from "react-redux";
-import axios from "../../services/CustomAxios";
+import Select from "react-select";
 
-const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
-  const [desc, setDesc] = useState("");
-  const [file, setFile] = useState([]);
-  const [image, setImage] = useState([]);
+import "react-toastify/dist/ReactToastify.css";
+import * as YearService from "../../services/YearService";
 
-  const [deadline, setDeadline] = useState();
-  const [displayDeadline, setDisplayDeadline] = useState();
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+const MoodleYear = ({ show, handleToggle, handleChange }) => {
+  const years = [];
+  const [change, setChange] = useState();
+  for (let index = 2023; index < 2050; index++) {
+    years.push(index);
+  }
 
-  const user = useSelector((state) => state.user);
+  const options = years.map((year) => {
+    return { value: year, label: year };
+  });
 
-  const handleSave = async () => {
-    if (Date.parse(deadline) - Date.now() >= 0) {
-      let res = null;
-      res = await ArticleServices.uploadArticle(user, desc, file, image);
-      setDesc("");
-      setFile([]);
-      setImage([]);
-      if (res) {
-        // window.location.reload(true);
-        setChange(!currentStage);
-        handleToggle();
+  const handleSave = async (year) => {
+    console.log(year);
+    const res = await YearService.addNewYear(String(year));
+    if (res) {
+      console.log(res);
+      if (res.id) {
+        handleChange();
       }
-    } else {
-      toast.error(
-        "The deadline for the article submission has passed. You can submit it in the next term"
-      );
     }
   };
 
-  useEffect(() => {
-    fetchDeadlineData();
-  }, [currentStage]);
-
-  const fetchDeadlineData = async () => {
-    const res = await axios.get(`/closedates/faculty/${user.faculty.id}`);
-    setDeadline(res.closingDate);
-    const beutyDate = new Date(res.closingDate).toLocaleDateString(
-      undefined,
-      options
-    );
-    setDisplayDeadline(beutyDate);
-  };
+  const [selectedYear, setSelectedYear] = useState(null);
 
   return (
     <div
@@ -67,7 +42,7 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
         <div className="relative bg-white rounded-lg shadow border border-black">
           <div className="flex items-center justify-between p-4 md:p-5 border-black shadow-sm rounded-t">
             <h3 className="text-xl font-semibold text-gray-900 ">
-              Upload Article
+              Add new academic year to system
             </h3>
             <button
               onClick={handleToggle}
@@ -91,64 +66,26 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
           <div className="p-4 md:p-5 space-y-4">
             <form encType="multipart/form-data">
               <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                Deadline
-                <p>{displayDeadline}</p>
+                Year
               </label>
-
-              <label className="block mb-2 font-medium text-lg uppercase text-gray-900 ">
-                Short Description
-              </label>
-              <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none "
-                type="text"
-                value={desc}
-                onChange={(e) => {
-                  setDesc(e.currentTarget.value);
-                }}
-              ></input>
+              <Select
+                defaultValue={selectedYear}
+                onChange={setSelectedYear}
+                options={options}
+              />
               <p className="mt-1 text-sm text-gray-500 " id="file_input_help">
-                Name of Paper.
-              </p>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                File
-              </label>
-              <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
-                aria-describedby="file_input_help"
-                type="file"
-                accept=".docx"
-                name="file"
-                value={file.originalname}
-                onChange={(e) => setFile(e.target.files[0])}
-              ></input>
-              <p className="mt-1 text-sm text-gray-500 " id="file_input_help">
-                DOCX (MAX &lt; 5MB).
-              </p>
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                Image
-              </label>
-              <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
-                aria-describedby="file_input_help"
-                type="file"
-                // accept=".jpeg .jpg .png"
-                name="file"
-                value={image.originalname}
-                onChange={(e) => setImage(e.target.files[0])}
-              ></input>
-              <p className="mt-1 text-sm text-gray-500 " id="file_input_help">
-                Img(MAX &lt; 5MB).
+                year range from 2023 - 2050
               </p>
             </form>
           </div>
           <div className="flex justify-center items-center p-4 md:p-5 border-t border-gray-200 rounded-b ">
             <button
-              onClick={handleSave}
+              onClick={() => handleSave(selectedYear.value)}
               data-modal-hide="default-modal"
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
             >
-              Upload
+              Add
             </button>
             <button
               onClick={handleToggle}
@@ -165,4 +102,4 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
   );
 };
 
-export default MoodleAdd;
+export default MoodleYear;

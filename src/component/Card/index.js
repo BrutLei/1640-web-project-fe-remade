@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import fileDownload from "js-file-download";
 
 import axios from "../../services/CustomAxios";
 import "./card.css";
 import images from "../../assets";
+import { toast } from "react-toastify";
+import ModalCmtView from "../MoodleCommentView";
 
-function Card({ status, title, path, id }) {
+function Card({
+  status,
+  title,
+  path,
+  id,
+  image,
+  setChange,
+  currentStage,
+  comment,
+}) {
+  const [showCmt, setShowCmt] = useState(false);
+  // console.log(image);
+  const imgId = image?.split("\\")[1];
+  // console.log(imgId);
   let name = "";
   if (path) {
     name = path.split("\\")[1];
@@ -16,7 +31,8 @@ function Card({ status, title, path, id }) {
     res = await axios.delete(`/articles/delete/${id}`);
     console.log(res);
     if (res) {
-      window.location.reload(true);
+      // window.location.reload(true);
+      setChange(!currentStage);
     }
   };
 
@@ -31,13 +47,30 @@ function Card({ status, title, path, id }) {
     console.log(res);
     fileDownload(res, name);
   };
+
+  const showCmtMod = () => {
+    setShowCmt(!showCmt);
+  };
+
   return (
-    <div className="w-fit text-center shadow-lg m-4">
-      <img src={images.thumbnail} alt="Article" style={{ width: "100%" }}></img>
-      <h1 className="text-3xl text-gray-900">{title || "Untitled"}</h1>
+    <div
+      onClick={showCmtMod}
+      className="w-fit text-center shadow-lg m-4 cursor-help"
+    >
+      <ModalCmtView
+        showModal={showCmt}
+        setShowModal={setShowCmt}
+        comment={comment}
+      />
+      <img
+        src={`http://localhost:8080/images/${imgId}` || images.thumbnail}
+        alt="Article"
+        style={{ width: "100%" }}
+      ></img>
       <p className="price text-green-700 text-center underline">
         {status || "Unknown"}
       </p>
+      <p className="text-lg text-gray-900 ">{title || "Description"}</p>
       <a className="font-medium text-blue-600 hover:underline">
         {name || `heeps://Article.com.vn`}
       </a>

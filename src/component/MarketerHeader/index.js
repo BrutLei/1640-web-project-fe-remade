@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import images from "../../assets";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import { resetUser } from "../../redux/slices/userSlice";
 
-function AdminHeader() {
+function MarketerHeader() {
   // const [logged, setLogged] = useState(false);
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -43,7 +44,7 @@ function AdminHeader() {
       <nav className="m-2">
         <div className="justify-between max-w-screen flex flex-wrap items-center mx-auto p-4">
           <a className="flex flex-row w-32">
-            <img src={images.commonLogo} className="h-10 mr-2" />
+            <img src={images.avatar} className="h-10 mr-2" />
             <span className="self-center text-xl font-semibold whitespace-nowrap capitalize"></span>
           </a>
           <div>
@@ -54,7 +55,7 @@ function AdminHeader() {
                 }`}
               >
                 <NavLink to="/admin/year">
-                  <button className="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                  <button class="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                     Acadamic Year
                   </button>
                 </NavLink>
@@ -66,7 +67,7 @@ function AdminHeader() {
                 }`}
               >
                 <NavLink to="/admin/faculty">
-                  <button className="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                  <button class="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                     Faculty
                   </button>
                 </NavLink>
@@ -78,7 +79,7 @@ function AdminHeader() {
                 }`}
               >
                 <NavLink to="/admin/user">
-                  <button className="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                  <button class="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                     User
                   </button>
                 </NavLink>
@@ -87,7 +88,7 @@ function AdminHeader() {
           </div>
           <div
             style={{ position: "relative" }}
-            className="flex justify-end items-center w-36"
+            className="flex justify-between items-center w-36"
           >
             <button
               type="button"
@@ -101,14 +102,14 @@ function AdminHeader() {
               }}
             >
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 mx-1 rounded-full"
                 src={images.avatar}
                 style={{ width: "100%" }}
                 alt="user photo"
               />
               <span className="sr-only">Open user menu</span>
             </button>
-            <span className="ml-10 self-center border-solid border border-gray-400 rounded-xl text-black bg-slate-50 p-2 visible sm:invisible md:visible lg:visible">
+            <span className="ml-1 text-center self-center border-solid border border-gray-400 rounded-xl text-black bg-slate-50 p-2 visible sm:invisible md:visible lg:visible">
               {user?.username ? user.username : ""}
             </span>
             <div
@@ -185,4 +186,4 @@ function AdminHeader() {
   );
 }
 
-export default AdminHeader;
+export default MarketerHeader;

@@ -1,20 +1,8 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 
 const instance = axios.create({
   baseURL: "http://localhost:8080",
 });
-
-const handleDecoded = () => {
-  let token = localStorage.getItem("access_token");
-  if (token) {
-    const decode = jwtDecode(token);
-    if (decode && decode.id) {
-      return { decode, token };
-    }
-  }
-};
 
 instance.interceptors.response.use(
   function (response) {

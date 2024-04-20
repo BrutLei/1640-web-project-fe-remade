@@ -1,4 +1,4 @@
-import { AdminLayout, StudentLayout } from "../layouts";
+import { AdminLayout, MarketerLayout, StudentLayout } from "../layouts";
 import {
   AcadamicYearPage,
   Admin,

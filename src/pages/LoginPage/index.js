@@ -19,40 +19,48 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  if (user.group === "student") {
-    navigate("/student");
-  } else if (user.group === "admin") {
-    navigate("/admin");
-  }
-
+  // if (user.group === "student") {
+  //   navigate("/student");
+  // } else if (user.group === "admin") {
+  //   navigate("/admin");
+  // } else if (user.group === "Marketing Coordinator") {
+  //   navigate("/marketingmanager");
+  // }
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
+      const decoded = jwtDecode(token);
+
+      if (decoded) {
+        handleGetDetailsUser(decoded.id, token);
+      }
       setLogged(!logged);
       if (user) {
         if (user.group === "student") {
           navigate("/student");
         } else if (user.group === "admin") {
           navigate("/admin");
+        } else if (user.group === "Marketing Coordinator") {
+          navigate("/marketingmanager");
         }
       }
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (isSuccess) {
       // console.log(data);
       if (data) {
-        console.log(data);
         localStorage.setItem("access_token", data.DT.accessToken);
         const decoded = jwtDecode(data.DT.accessToken);
-        // console.log(decoded);
+
         if (decoded) {
           handleGetDetailsUser(decoded.id, data.DT.accessToken);
         }
       }
       if (data.EC === "0-1") {
-        navigate("/student");
+        // navigate("/student");
+        navigate("/marketingmanager");
       } else {
         navigate("/admin");
       }

@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import axios from "./CustomAxios";
 
 const login = async (data) => {
@@ -66,10 +65,24 @@ const fetchingArticle = async (access_token) => {
   }
 };
 
+const fetchingFacultyArticle = async (access_token, fId) => {
+  try {
+    const res = await axios.get(`/articles/${fId}`, {
+      headers: {
+        token: `Beare ${access_token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   login,
   getDetailsUSer,
   logout,
   fetchingStudentArticle,
   fetchingArticle,
+  fetchingFacultyArticle,
 };
