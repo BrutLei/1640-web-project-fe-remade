@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { resetUser } from "../../redux/slices/userSlice";
 
-function AdminHeader() {
+function ManagerHeader() {
   // const [logged, setLogged] = useState(false);
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -43,8 +43,12 @@ function AdminHeader() {
       <nav className="m-2">
         <div className="justify-between max-w-screen flex flex-wrap items-center mx-auto p-4">
           <NavLink to="/admin">
-            <span className="flex flex-row w-32">
-              <img src={images.commonLogo} className="h-10 mr-2" />
+            <span className="flex">
+              <img
+                alt="logo school"
+                src={images.commonLogo}
+                className="h-10"
+              ></img>
               <span className="self-center text-xl font-semibold whitespace-nowrap capitalize"></span>
             </span>
           </NavLink>
@@ -56,7 +60,7 @@ function AdminHeader() {
                   pathname === "year" ? "text-blue-700" : ""
                 }`}
               >
-                <NavLink to="/admin/year">
+                <NavLink to="/manager/year">
                   <button className="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                     Acadamic Year
                   </button>
@@ -68,9 +72,9 @@ function AdminHeader() {
                   pathname === "faculty" ? "text-blue-700" : ""
                 }`}
               >
-                <NavLink to="/admin/faculty">
+                <NavLink to="/manager/topic">
                   <button className="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                    Faculty
+                    Topic
                   </button>
                 </NavLink>
               </li>
@@ -80,9 +84,9 @@ function AdminHeader() {
                   pathname === "user" ? "text-blue-700" : ""
                 }`}
               >
-                <NavLink to="/admin/user">
+                <NavLink to="/manager/deadline">
                   <button className="bg-blue-500 w-44 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                    User
+                    Deadline
                   </button>
                 </NavLink>
               </li>
@@ -90,11 +94,11 @@ function AdminHeader() {
           </div>
           <div
             style={{ position: "relative" }}
-            className="flex justify-end items-center w-36"
+            className="flex items-center justify-start w-20"
           >
             <button
               type="button"
-              className="text-sm bg-gray-8000 rounded-lg md:me-0 focus:ring-4 self-center focus:ring-gray-300"
+              className="text-sm bg-gray-8000 rounded-lg md:me-0 focus:ring-4 self-center w-96 focus:ring-gray-300"
               id="user-menu-button"
               aria-expanded="false"
               data-dropdown-toggle="user-dropdown"
@@ -104,18 +108,17 @@ function AdminHeader() {
               }}
             >
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-10 h-10 rounded-full"
                 src={images.avatar}
-                style={{ width: "100%" }}
                 alt="user photo"
               />
               <span className="sr-only">Open user menu</span>
             </button>
-            <span className="ml-10 self-center border-solid border border-gray-400 rounded-xl text-black bg-slate-50 p-2 visible sm:invisible md:visible lg:visible">
+            <span className="truncate ml-1 h-10 self-center border-solid border border-gray-400 rounded-xl text-black bg-slate-50 p-2 visible sm:invisible md:visible lg:visible">
               {user?.username ? user.username : ""}
             </span>
             <div
-              style={{ position: "absolute", top: "35px" }}
+              style={{ position: "absolute", top: "35px", right: "-15px" }}
               className={`z-50 ${
                 showMenu ? "" : "hidden"
               } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
@@ -188,4 +191,4 @@ function AdminHeader() {
   );
 }
 
-export default AdminHeader;
+export default ManagerHeader;

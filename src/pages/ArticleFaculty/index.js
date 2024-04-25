@@ -163,7 +163,7 @@ const ArticleFaculty = () => {
                       onChange={(e) => handleUpdate(e, element.id)}
                       options={options}
                     />
-                    <div className="m-4">
+                    <div className="m-4 w-20">
                       <p className="text-base font-medium text-500 leading-7 tracking-tight text-center">
                         {element.comment ? `Comment: ${element.comment}` : ""}
                       </p>

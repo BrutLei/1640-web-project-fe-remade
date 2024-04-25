@@ -42,6 +42,8 @@ const Login = () => {
           navigate("/admin");
         } else if (user.group === "Marketing Coordinator") {
           navigate("/marketingmanager");
+        } else if (user.group === "Marketing Manager") {
+          navigate("/manager");
         }
       }
     }

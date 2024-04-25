@@ -65,7 +65,7 @@ function Card({
       <img
         src={`http://localhost:8080/images/${imgId}` || images.thumbnail}
         alt="Article"
-        style={{ width: "100%" }}
+        style={{ height: "250px" }}
       ></img>
       <p className="price text-green-700 text-center underline">
         {status || "Unknown"}

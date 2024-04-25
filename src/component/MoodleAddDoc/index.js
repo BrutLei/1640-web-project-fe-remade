@@ -12,6 +12,9 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
   const [image, setImage] = useState([]);
 
   const [deadline, setDeadline] = useState();
+  const [topic, setTopic] = useState(null);
+  const [topicId, setTopicId] = useState();
+
   const [displayDeadline, setDisplayDeadline] = useState();
   const options = {
     weekday: "long",
@@ -23,36 +26,77 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
   const user = useSelector((state) => state.user);
 
   const handleSave = async () => {
-    if (Date.parse(deadline) - Date.now() >= 0) {
-      let res = null;
-      res = await ArticleServices.uploadArticle(user, desc, file, image);
-      setDesc("");
-      setFile([]);
-      setImage([]);
-      if (res) {
-        // window.location.reload(true);
-        setChange(!currentStage);
-        handleToggle();
+    if (topic) {
+      if (Date.parse(deadline) - Date.now() >= 0) {
+        if (!desc || file.length <= 0 || image.length <= 0) {
+          toast.error("Missing required data");
+        } else {
+          let res = null;
+          res = await ArticleServices.uploadArticle(user, desc, file, image);
+          setDesc("");
+          setFile([]);
+          setImage([]);
+          if (res) {
+            setChange(!currentStage);
+            handleToggle();
+            setDesc("");
+            setFile([]);
+            setImage([]);
+          }
+        }
+        setDesc("");
+        setFile([]);
+        setImage([]);
+      } else {
+        toast.error(
+          "The deadline for the article submission has passed. You can submit it in the next term"
+        );
       }
     } else {
-      toast.error(
-        "The deadline for the article submission has passed. You can submit it in the next term"
-      );
+      toast.error("Your faculty still does not have the topic for this year.");
     }
+    setDesc("");
+    setFile([]);
+    setImage([]);
   };
 
   useEffect(() => {
-    fetchDeadlineData();
+    fetchFacultyTopic();
   }, [currentStage]);
 
-  const fetchDeadlineData = async () => {
-    const res = await axios.get(`/closedates/faculty/${user.faculty.id}`);
-    setDeadline(res.closingDate);
-    const beutyDate = new Date(res.closingDate).toLocaleDateString(
-      undefined,
-      options
-    );
-    setDisplayDeadline(beutyDate);
+  const fetchDeadlineData = async (id) => {
+    const res = await axios.get(`/closedates/topic/${id}`);
+    if (res) {
+      if (res.data) {
+        console.log(res);
+      } else {
+        setDeadline(res.closingDate);
+        const beutyDate = new Date(res.closingDate).toLocaleDateString(
+          undefined,
+          options
+        );
+        setDisplayDeadline(beutyDate);
+      }
+    }
+  };
+
+  const fetchFacultyTopic = async () => {
+    const res = await axios.get(`/topics/faculty/${user.faculty.id}`);
+    if (res) {
+      console.table(res);
+      if (res.data) {
+        if (
+          res.data === "Cannot found the faculty's topic" ||
+          res.data === "Still don't have a topic for this faculty this year"
+        ) {
+          console.log(res);
+        }
+      } else {
+        fetchDeadlineData(res.id);
+        setTopicId(res.id);
+        setTopic(res.name);
+      }
+    }
   };
 
   return (
@@ -90,6 +134,10 @@ const MoodleAdd = ({ show, handleToggle, setChange, currentStage }) => {
           </div>
           <div className="p-4 md:p-5 space-y-4">
             <form encType="multipart/form-data">
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                Topic
+                <p>{topic}</p>
+              </label>
               <label className="block mb-2 text-sm font-medium text-gray-900 ">
                 Deadline
                 <p>{displayDeadline}</p>

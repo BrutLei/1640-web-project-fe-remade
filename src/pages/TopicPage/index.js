@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import ModalDeadline from "../../component/MoodleDeadline";
-import * as DeadlineService from "../../services/CloseDateService";
 import axios from "../../services/CustomAxios";
 
-const DeadlinePage = () => {
-  const [deadline, setDeadline] = useState([]);
-  const [topic, setTopic] = useState("");
+const TopicPage = () => {
+  const [topic, setTopic] = useState([]);
 
   const options = {
     weekday: "long",
@@ -14,46 +12,19 @@ const DeadlinePage = () => {
     day: "numeric",
   };
 
-  const fetchingDeadLine = async () => {
-    const res = await DeadlineService.fetchingDeadlineData();
-    const configRes = await Promise.all(
-      res.map(async (e) => {
-        const newDate = new Date(e.closingDate);
-        if (e.topicId) {
-          const topic = await axios.get(`topics/${e.topicId}`);
-          // console.log(newDate.toLocaleDateString(undefined, options));
-          // if (topic !== "Cannot found topic") {
-          //   return {
-          //     ...e,
-          //     closingDate: newDate.toLocaleDateString(undefined, options),
-          //     topic: topic.name,
-          //   };
-          // }
-
-          return {
-            ...e,
-            closingDate: newDate.toLocaleDateString(undefined, options),
-            topic: topic.name,
-          };
-        }
-        return {
-          ...e,
-          closingDate: newDate.toLocaleDateString(undefined, options),
-          topic: topic.name,
-        };
-      })
-    );
-    setDeadline(configRes);
+  const fetchingTopic = async () => {
+    const res = await axios.get("/topics");
+    setTopic(res);
   };
 
   useEffect(() => {
-    fetchingDeadLine();
+    fetchingTopic();
   }, []);
   const [showModal, setShowModal] = React.useState(false);
   return (
     <>
       <div className="flex justify-between items-center mt-2">
-        <p>Deadline list:</p>
+        <p>Topic list:</p>
         {/* <ModalDeadline showModal={showModal} setShowModal={setShowModal} /> */}
       </div>
       <div>
@@ -69,30 +40,26 @@ const DeadlinePage = () => {
               <th className="px-4 py-2 text-gray-700 font-medium uppercase tracking-wider text-center">
                 Faculty Name
               </th>
-              <th className="px-4 py-2 text-gray-700 font-medium uppercase tracking-wider text-center">
-                Deadline
-              </th>
+
               <th className="px-4 py-2 text-gray-700 font-medium uppercase tracking-wider text-center">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {deadline.map((dl, index) => {
+            {topic.map((dl, index) => {
               return (
                 <tr key={index}>
                   <td className="px-4 py-2 border-b border-gray-200 text-center">
                     {dl.id}
                   </td>
                   <td className="px-4 py-2 border-b border-gray-200 text-center">
-                    {dl.topic}
+                    {dl.name}
                   </td>
                   <td className="px-4 py-2 border-b border-gray-200 text-center">
                     {dl.faculty_name}
                   </td>
-                  <td className="px-4 py-2 border-b border-gray-200 text-center">
-                    {dl.closingDate}
-                  </td>
+
                   <td className="px-4 py-2 border-b border-gray-200 text-center">
                     <button
                       onClick={() => {
@@ -116,4 +83,4 @@ const DeadlinePage = () => {
   );
 };
 
-export default DeadlinePage;
+export default TopicPage;

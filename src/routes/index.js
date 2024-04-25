@@ -1,4 +1,4 @@
-import { AdminLayout, MarketerLayout, StudentLayout } from "../layouts";
+import { AdminLayout, StudentLayout, ManagerLayout } from "../layouts";
 import {
   AcadamicYearPage,
   Admin,
@@ -11,6 +11,7 @@ import {
   NotFoundPage,
   UserPage,
   ArticleTable,
+  TopicPage,
 } from "../pages";
 
 export const routes = [
@@ -44,6 +45,29 @@ export const studentRoutes = [
     path: "/student",
     page: ArticlePage,
     layout: StudentLayout,
+  },
+];
+
+export const managerRoute = [
+  {
+    path: "/manager",
+    page: Admin,
+    layout: ManagerLayout,
+  },
+  {
+    path: "/manager/year",
+    page: AcadamicYearPage,
+    layout: ManagerLayout,
+  },
+  {
+    path: "/manager/topic",
+    page: TopicPage,
+    layout: ManagerLayout,
+  },
+  {
+    path: "/manager/deadline",
+    page: DeadlinePage,
+    layout: ManagerLayout,
   },
 ];
 

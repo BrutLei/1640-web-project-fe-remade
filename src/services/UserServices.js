@@ -29,6 +29,20 @@ const getDetailsUSer = async (id, access_token) => {
   }
 };
 
+const getAllUsers = async (access_token) => {
+  try {
+    const res = await axios.get("/users", {
+      headers: {
+        token: `Beare ${access_token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.error("server error:", error.name);
+    return;
+  }
+};
+
 const logout = async () => {
   try {
     const res = await axios.post("/set-cookie");
@@ -78,6 +92,36 @@ const fetchingFacultyArticle = async (access_token, fId) => {
   }
 };
 
+const createNewUser = async (email, username, password, groupId, facId) => {
+  const res = await axios.post("/users/create", {
+    email: email,
+    username: username,
+    password: password,
+    groupId: groupId,
+    facultyId: facId,
+  });
+  return res;
+};
+
+const updateUser = async (id, email, username, groupId, facultyId) => {
+  const res = await axios.put(`users/update/${id}`, {
+    email: email,
+    username: username,
+    groupId: groupId,
+    facultyId: facultyId,
+  });
+  return res;
+};
+
+const deleteUser = async (id, access_token) => {
+  const res = await axios.delete(`users/delete/${id}`, {
+    headers: {
+      token: `Beare ${access_token}`,
+    },
+  });
+  return res;
+};
+
 export {
   login,
   getDetailsUSer,
@@ -85,4 +129,8 @@ export {
   fetchingStudentArticle,
   fetchingArticle,
   fetchingFacultyArticle,
+  getAllUsers,
+  createNewUser,
+  updateUser,
+  deleteUser,
 };

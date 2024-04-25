@@ -5,6 +5,7 @@ function AdminLayout({ children }) {
   return (
     <div>
       <AdminHeader />
+
       <div className="px-10">{children}</div>
     </div>
   );
