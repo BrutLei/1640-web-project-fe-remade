@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://one640-back-end-remade.onrender.com/",
 });
 
 instance.interceptors.response.use(
